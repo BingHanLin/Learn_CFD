@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Import library
 import matplotlib.pyplot as plt
 import numpy as np
@@ -6,6 +7,15 @@ import enum
 import shutil  
 import os
 
+=======
+
+# Import library
+import matplotlib.pyplot as plt
+import numpy as np
+import enum
+import shutil  
+import os
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 # Types of nodes as follows:
 class NodeType(enum.IntEnum):
 
@@ -72,6 +82,10 @@ def computeVel():
     # v = -dPsi/dx
     for i in range (1,MB):
         for j in range (NB):
+<<<<<<< HEAD
+=======
+            # skip over walls, otherwise differencing on neighbors will be off
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
             if (i == 0):
                  v[i,j] = - (Psi[i+1,j]-Psi[i,j]) / dx
             elif (i == MB-1):
@@ -175,7 +189,11 @@ def plotNodes():
     plt.show()
 
 '''PrintOutput'''     
+<<<<<<< HEAD
 def printDate(DirName):
+=======
+def printDate():
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 
     a = np.reshape(pos_x,MB*NB)
     b = np.reshape(pos_y,MB*NB)
@@ -185,10 +203,14 @@ def printDate(DirName):
     f =  np.reshape(Psi,MB*NB)
     g =  np.reshape(nodes_type,MB*NB)  
     
+<<<<<<< HEAD
     FileName = 'Data'+str("%.5f" % (tStep*dt))+'.txt'
 
     np.savetxt('./'+ DirName + '/' + FileName,
                np.column_stack((a, b, c, d, e, f, g)),
+=======
+    np.savetxt('.\OutPut\Data'+str("%.5f" % (tStep*dt))+'.txt', np.column_stack((a, b, c, d, e, f, g)),
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
                fmt="%2.3f", delimiter=" , ")
 
 '''main program'''                     
@@ -202,6 +224,7 @@ dx = Length / (MB-1)
 dy = Height / (NB-1)
 
 # parameters of fluid
+<<<<<<< HEAD
 nu = 0.01      # kinematic viscosity 
 u0 = 1          # inlet velocity
 
@@ -215,11 +238,31 @@ maxiter = 500   # maximum number of iteration
 dir_name = "OutPutData"
 
 if not os.path.exists(dir_name):    
+=======
+nu = 0.1      # kinematic viscosity 
+u0 = 1          # inlet velocity
+
+# parameters for computation
+time_total = 10  # total time
+dt =0.001        # time step size
+recordN =  100      # time steps for recording data 
+maxiter = 500   # maximum number of iteration
+
+# setting folder for saving data
+dir_name = "OutPut"
+
+if not os.path.exists(dir_name):    #先確認資料夾是否存在
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
     os.makedirs(dir_name)
 else:
     shutil.rmtree(dir_name)  
     os.makedirs(dir_name)
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 # generate geometry
 pos_x, pos_y, nodes_type = makeGeometry()
 
@@ -227,22 +270,37 @@ pos_x, pos_y, nodes_type = makeGeometry()
 Psi, Vor, u, v = IntPsi()
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 # start iteration
 print ("Starting main loop")
 
 for tStep in range ( int(time_total/dt) ):
     
     # Update Solutions
+<<<<<<< HEAD
     VorOld = copy.copy(Vor)
     PsiOld = copy.copy(Psi)
 
     for it in range(maxiter+1):
         tempPsi = copy.copy(Psi)
         tempVor = copy.copy(Vor)
+=======
+    VorOld = Vor
+    PsiOld = Psi
+
+    for it in range(maxiter+1):
+        tempPsi = Psi
+        tempVor = Vor
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 
         # solve Psi
         computePsi()
 
+<<<<<<< HEAD
         # update velocity u and v
         computeVel()
 
@@ -251,6 +309,16 @@ for tStep in range ( int(time_total/dt) ):
         VorBou()
 
         # check for convergence
+=======
+        # update u and v
+        computeVel()
+
+        # advance w
+        Vor = advanceRK4()
+        VorBou()
+
+        #check for convergence
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
         error = np.linalg.norm(Vor-tempVor) / np.linalg.norm(Vor) 
         if (error<=1e-5):
             print('computation is convergent! ')
@@ -267,11 +335,19 @@ for tStep in range ( int(time_total/dt) ):
             print('convergence in iter : ',it,' , ', error )
 
     if (tStep % recordN == 0):
+<<<<<<< HEAD
         printDate(dir_name)
     
     if ((tStep+1)*dt == time_total):
         tStep += 1
         printDate(dir_name)
+=======
+        printDate()
+    
+    if ((tStep+1)*dt == time_total):
+        tStep += 1
+        printDate()
+>>>>>>> d60441bc94de99d7b82b0be2265ddb4d8f900412
 
     fig, ax = plt.subplots(figsize=(10, 8), dpi=100, facecolor='w', edgecolor='k')
 
